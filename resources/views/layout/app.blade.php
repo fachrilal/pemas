@@ -58,25 +58,17 @@
                 <ul class="mt-6 space-y-4">
                     <!-- Menu Item 1 -->
                     <li>
-                        <a href="#" class="flex items-center gap-3 px-4 py-2 hover:bg-[#88827A] rounded-lg">
+                        <a href="{{route('home')}}" class="flex items-center gap-3 px-4 py-2 hover:bg-[#88827A] rounded-lg">
                             <span class="material-icons">home</span>
                             <span class="text whitespace-nowrap">Home</span>
                         </a>
                     </li>
-                    <!-- Menu Item 2 -->
-                    <li>
-                        <a href="#" class="flex items-center gap-3 px-4 py-2 hover:bg-[#88827A] rounded-lg">
-                            <span class="material-icons">dashboard</span>
-                            <span class="text whitespace-nowrap">Dashboard</span>
-                        </a>
-                    </li>
                     <!-- Menu Item 3 -->
-                    <li>
-                        <a href="#" class="flex items-center gap-3 px-4 py-2 hover:bg-[#88827A] rounded-lg">
-                            <span class="material-icons">report</span>
-                            <span class="text whitespace-nowrap">Reports</span>
-                        </a>
-                    </li>
+                    <a href="{{ route('report.create') }}" class="flex items-center gap-3 px-4 py-2 hover:bg-[#88827A] rounded-lg transition duration-200">
+                        <span class="material-icons text-white">report</span>
+                        <span class="text whitespace-nowrap">Reports</span>
+                    </a>
+                    
                     <!-- Menu Item 4 -->
                     <li>
                         <a href="#" class="flex items-center gap-3 px-4 py-2 hover:bg-gray-600 rounded-lg transition duration-200">
@@ -87,24 +79,24 @@
                     <!-- Conditional Login/Register or Logout -->
                     @guest
                         <li>
-                            <a href="{{ route('login') }}" class="flex items-center gap-3 px-4 py-2 hover:bg-gray-600 rounded-lg transition duration-200">
+                            <a href="{{route('login')}}" class="flex items-center gap-3 px-4 py-2 hover:bg-gray-600 rounded-lg transition duration-200">
                                 <span class="material-icons text-white">login</span>
                                 <span class="text whitespace-nowrap">Login</span>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('register') }}" class="flex items-center gap-3 px-4 py-2 hover:bg-gray-600 rounded-lg transition duration-200">
+                            <a href="{{route('register')}}" class="flex items-center gap-3 px-4 py-2 hover:bg-gray-600 rounded-lg transition duration-200">
                                 <span class="material-icons text-white">person_add</span>
                                 <span class="text whitespace-nowrap">Register</span>
                             </a>
                         </li>
                     @else
                         <li>
-                            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="flex items-center gap-3 px-4 py-2 hover:bg-gray-600 rounded-lg transition duration-200">
+                            <a href="" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="flex items-center gap-3 px-4 py-2 hover:bg-gray-600 rounded-lg transition duration-200">
                                 <span class="material-icons text-white">logout</span>
                                 <span class="text whitespace-nowrap">Logout</span>
                             </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            <form id="logout-form" action="" method="POST" style="display: none;">
                                 @csrf
                             </form>
                         </li>

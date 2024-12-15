@@ -1,27 +1,82 @@
 @extends('layout.app')
 
 @section('content')
-<div class="flex flex-col items-center p-6">
-    <!-- Navigasi untuk Scroll -->
-    <div class="w-full flex justify-around mb-8">
-        <a href="#home" class="text-lg font-semibold hover:text-[#88827A] transition duration-300">Home</a>
-        <a href="#dashboard" class="text-lg font-semibold hover:text-[#88827A] transition duration-300">Dashboard</a>
-    </div>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+    }
+    .form-container {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    select, button {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        font-size: 16px;
+    }
+</style>
 
-    <!-- Bagian Home -->
-    <section id="home" class="w-full min-h-screen flex items-center justify-center bg-gray-100">
-        <div class="text-center p-6">
-            <h2 class="text-3xl font-bold mb-4">Welcome to Home Page</h2>
-            <p>This is the home section of the website.</p>
-        </div>
-    </section>
-
-    <!-- Bagian Dashboard -->
-    <section id="dashboard" class="w-full min-h-screen flex items-center justify-center bg-[#F6F6D9]">
-        <div class="text-center p-6">
-            <h2 class="text-3xl font-bold mb-4">Dashboard</h2>
-            <p>Here is your dashboard overview.</p>
-        </div>
-    </section>
+<div id="wrap-option">
+    <!-- Konten akan dimasukkan dengan AJAX -->
 </div>
+
+@if($reports->isEmpty())
+    <p>No reports found.</p>
+@else
+    @foreach($reports as $report)
+        <div class="p-4 border rounded-lg shadow mb-4">
+            <h3 class="text-xl font-semibold">{{ $report->type }}</h3>
+            <p>{{ $report->detail }}</p>
+            <img src="{{ asset('storage/' . $report->gambar) }}" alt="Report Image" class="w-full max-h-48 object-cover my-2">
+            <p class="text-gray-500">Wilayah: {{ $report->provinsi }} > {{ $report->kota }} > {{ $report->kecamatan }} > {{ $report->kelurahan }}</p>
+            <button class="text-blue-500">Like</button>
+            <button class="text-green-500">Comment</button>
+        </div>
+    @endforeach
+@endif
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        // Panggil API untuk mendapatkan data provinsi
+        $.ajax({
+            method: "GET",
+            url: "https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json",
+            dataType: "json",
+            success: function(response) {
+                let options = '<option value="">-- Select a Province --</option>';
+                response.forEach(province => {
+                    options += `<option value="${province.id}">${province.name}</option>`;
+                });
+
+                $('#wrap-option').html(`
+                    <div class="form-container">
+                        <h3>Select Input with Search</h3>
+                        <form id="searchForm">
+                            <label for="options">Choose a province:</label>
+                            <select id="options" name="options">${options}</select>
+                            <button type="button" id="searchButton">Search</button>
+                        </form>
+                        <div id="result" style="margin-top: 20px; font-size: 16px; color: #333;"></div>
+                    </div>
+                `);
+            },
+            error: function(error) {
+                $('#wrap-option').html('<p>Failed to load options. Please try again later.</p>');
+            }
+        });
+
+        $(document).on('click', '#searchButton', function() {
+            const selectedValue = $('#options').val();
+            if (!selectedValue) {
+                alert('Please select a province!');
+            } else {
+                alert(`You selected province with ID: ${selectedValue}`);
+            }
+        });
+    });
+</script>
 @endsection
